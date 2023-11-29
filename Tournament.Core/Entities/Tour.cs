@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tournament.Core.Entities
 {
@@ -30,7 +25,13 @@ namespace Tournament.Core.Entities
             builder.Property(t => t.Title)
                 .IsRequired()
                 .HasMaxLength(50);
-
+            // configure data time
+            builder
+               .Property(t => t.StartDate)
+               .HasConversion(
+                   time => time.ToString("yyyy-MM-ddTHH:mm:ss"),
+                   timeString => DateTime.ParseExact(timeString, "yyyy-MM-ddTHH:mm:ss", null)
+               );
         }
     }
 }

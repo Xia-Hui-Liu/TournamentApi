@@ -13,8 +13,6 @@ namespace Tournament.Core.Entities
         // FK
         public int? TourId { get; set; }
 
-       
-
 
     }
 
@@ -29,9 +27,14 @@ namespace Tournament.Core.Entities
             builder.Property(g => g.Title)
                 .IsRequired()
                 .HasMaxLength(50);
-            //    builder.HasOne(g => g.Tour)  
-            //        .WithMany(t => t.Games)
-            //        .HasForeignKey(g => g.TourId);
+
+            // configure date time
+            builder
+               .Property(g => g.Time)
+               .HasConversion(
+                   time => time.ToString("yyyy-MM-ddTHH:mm:ss"),
+                   timeString => DateTime.ParseExact(timeString, "yyyy-MM-ddTHH:mm:ss", null)
+               ); ;
         }
     }
 }
