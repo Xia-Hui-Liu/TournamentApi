@@ -9,6 +9,11 @@ using Tournament.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers(options =>
+{
+    options.ReturnHttpNotAcceptable = true;
+});
+
 builder.Services.AddDbContext<TournamentApiContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TournamentApiContext") ?? throw new InvalidOperationException("Connection string 'TournamentApiContext' not found.")));
 
@@ -18,6 +23,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(TournamentMappings));
+builder.Services.AddAutoMapper(typeof(GameMapping));
 
 builder.Services.AddScoped<IUoW, UoW>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();

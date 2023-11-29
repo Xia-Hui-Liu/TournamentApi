@@ -5,6 +5,10 @@ using Tournament.Data.Data;
 using Tournament.Core.Entities;
 using Tournament.Core.Repositories;
 using Bogus.DataSets;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using NuGet.Protocol;
+using Tournament.Core.Dto.TourDtos;
 
 namespace Tournament.Api.Controllers
 {
@@ -14,19 +18,21 @@ namespace Tournament.Api.Controllers
     {
        
         private readonly IUoW _unitOfWork;
-        public ToursController(IUoW unitOfWork)
+        private readonly IMapper _mapper;
+        public ToursController(IUoW unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         // GET: api/Tours
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tour>>> GetTour()
+        public async Task<ActionResult<IEnumerable<TourDto>>> GetTour()
         {
-            var tours = await _unitOfWork.TourRepository.GetAllAsync();
+            var tour = await _unitOfWork.TourRepository.GetAllAsync();
+            var tourDtos = _mapper.Map<IEnumerable<TourDto>>(tour);
 
-
-            return Ok(tours);
+            return Ok(tourDtos);
         }
 
         // GET: api/Tours/5

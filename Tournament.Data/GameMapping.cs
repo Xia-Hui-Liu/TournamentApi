@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Tournament.Core.Dto;
+using Tournament.Core.Dto.GameDtos;
 using Tournament.Core.Entities;
 
 namespace Tournament.Data
