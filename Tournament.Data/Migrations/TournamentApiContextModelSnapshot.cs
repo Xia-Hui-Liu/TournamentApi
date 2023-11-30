@@ -24,11 +24,9 @@ namespace Tournament.Data.Migrations
 
             modelBuilder.Entity("Tournament.Core.Entities.Game", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
@@ -39,20 +37,21 @@ namespace Tournament.Data.Migrations
                     b.Property<int?>("TourId")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("TourId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("TourId");
+                    b.HasIndex("TourId1");
 
                     b.ToTable("Game");
                 });
 
             modelBuilder.Entity("Tournament.Core.Entities.Tour", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -69,7 +68,7 @@ namespace Tournament.Data.Migrations
                 {
                     b.HasOne("Tournament.Core.Entities.Tour", null)
                         .WithMany("Games")
-                        .HasForeignKey("TourId");
+                        .HasForeignKey("TourId1");
                 });
 
             modelBuilder.Entity("Tournament.Core.Entities.Tour", b =>

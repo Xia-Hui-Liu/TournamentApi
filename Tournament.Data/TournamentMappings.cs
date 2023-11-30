@@ -9,9 +9,10 @@ namespace Tournament.Data
     {
         public TournamentMappings()
         {
-            CreateMap<Tour, TourDto>();
-            CreateMap<Tour, TourWithoutGameDto>();
-        
+            CreateMap<Tour, TourDto>().ReverseMap();
+
+            CreateMap<TourForUpdateDto, Tour>();
+
         }
 
     }

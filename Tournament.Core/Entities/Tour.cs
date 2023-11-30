@@ -5,7 +5,7 @@ namespace Tournament.Core.Entities
 {
     public class Tour
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string? Title { get; set; }
         public DateTime StartDate { get; set; }
 
@@ -21,17 +21,19 @@ namespace Tournament.Core.Entities
             // Configure primary key
             builder.HasKey(t => t.Id);
 
-            // configure max length for title
+            // Configure max length for title
             builder.Property(t => t.Title)
-                .IsRequired()
+                // Optional: .IsRequired() // Remove this line if Title is optional
                 .HasMaxLength(50);
-            // configure data time
+
+            // Configure date time conversion
             builder
-               .Property(t => t.StartDate)
-               .HasConversion(
-                   time => time.ToString("yyyy-MM-ddTHH:mm:ss"),
-                   timeString => DateTime.ParseExact(timeString, "yyyy-MM-ddTHH:mm:ss", null)
-               );
+                .Property(t => t.StartDate)
+                .HasConversion(
+                    time => time.ToString("O"), // Standard round-trip DateTime format
+                    timeString => DateTime.ParseExact(timeString, "O", null)
+                );
         }
     }
+
 }

@@ -43,32 +43,45 @@ namespace Tournament.Api.Controllers
 
         // GET: api/Tours/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TourDto>> GetTour(int id)
+        public async Task<ActionResult<TourDto>> GetTour(Guid id)
         {
-            var tour = await _unitOfWork.TourRepository.GetAsync(id);
-         
+            // Retrieve the tour from the repository 
+            Tour? tour = await _unitOfWork.TourRepository.GetAsync(id);
+
+            // Check if the tour was not found
             if (tour == null)
             {
-                return NotFound();
+                return NotFound(); // Return 404 Not Found if the tour is not found
             }
 
+
+            // Map the Tour entity to a TourDto and return it as Ok result
             return Ok(_mapper.Map<TourDto>(tour));
         }
+
 
 
         // PUT: api/Tours/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTour(int id, Tour tour)
+        public async Task<IActionResult> PutTour(Guid id, TourForUpdateDto dto)
         {
-            if (id != tour.Id)
+            if (id != dto.Id)
             {
                 return BadRequest();
             }
+            var existingTour = await _unitOfWork.TourRepository.GetAsync(id);
+            
+            if (existingTour == null) return NotFound();
 
-            _unitOfWork.TourRepository.Update(tour);
+            // Update the existing tour with values from the DTO
+            _mapper.Map(dto, existingTour);
+
+            // Save changes to db
+            _unitOfWork.TourRepository.Update(existingTour);
 
             return NoContent();
+           
         }
 
         // POST: api/Tours
@@ -90,7 +103,7 @@ namespace Tournament.Api.Controllers
 
         // DELETE: api/Tours/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTour(int id, bool includeGames)
+        public async Task<IActionResult> DeleteTour(Guid id, bool includeGames)
         {
             var tour = await _unitOfWork.TourRepository.GetAsync(id);
 
@@ -107,7 +120,7 @@ namespace Tournament.Api.Controllers
 
         // GET: api/Games/Exists/5
         [HttpGet("Exists/{id}")]
-        public async Task<ActionResult<bool>> TourExists(int id)
+        public async Task<ActionResult<bool>> TourExists(Guid id)
         {
             var exists = await _unitOfWork.TourRepository.AnyAsync(id);
             return Ok(exists);

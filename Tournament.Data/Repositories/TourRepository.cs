@@ -28,32 +28,31 @@ namespace Tournament.Data.Repositories
         }
 
 
-        public async Task<Tour> GetAsync(int id)
+        public async Task<Tour> GetAsync(Guid id)
         {
-                var tour = await _context.Tour
-                                    .Include(t => t.Games)
-                                    .Where(t => t.Id == id)
-                                    .FirstOrDefaultAsync();
-            
-                return tour!;
+            var tour = await _context.Tour
+                               .Where(t => t.Id == id)
+                               .FirstOrDefaultAsync();
+
+            return tour!;
         }
 
 
-        public Task<bool> AnyAsync(int id)
+        public Task<bool> AnyAsync(Guid id)
         {
             return _context.Tour.AnyAsync(t => t.Id == id);
         }
 
         public void Add(Tour tour)
         {
-                 _context.Tour.Add(tour);
-                 _context.SaveChanges();
+            _context.Tour.Add(tour);
+            _context.SaveChanges();
         }
 
         public void Update(Tour tour)
         {
             // Mark the entire entity as modified
-            _context.Entry(tour).State = EntityState.Modified;
+            //_context.Entry(tour).State = EntityState.Modified;
 
             // Save the changes
             _context.SaveChanges();

@@ -25,7 +25,7 @@ namespace Tournament.Data.Repositories
         }
 
 
-        public async Task<Game> GetAsync(int id)
+        public async Task<Game> GetAsync(Guid id)
         {
 
             var game = await _context.Game
@@ -35,7 +35,7 @@ namespace Tournament.Data.Repositories
         }
 
 
-        public Task<bool> AnyAsync(int id)
+        public Task<bool> AnyAsync(Guid id)
         {
             return _context.Game.AnyAsync(t => t.Id == id);
         }

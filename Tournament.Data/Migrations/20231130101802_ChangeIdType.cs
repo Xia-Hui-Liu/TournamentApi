@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Tournament.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class ChangeIdType : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,8 +15,7 @@ namespace Tournament.Data.Migrations
                 name: "Tour",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -29,27 +28,26 @@ namespace Tournament.Data.Migrations
                 name: "Game",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Time = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TournamentId = table.Column<int>(type: "int", nullable: false),
-                    TourId = table.Column<int>(type: "int", nullable: true)
+                    TourId = table.Column<int>(type: "int", nullable: true),
+                    TourId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Game", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Game_Tour_TourId",
-                        column: x => x.TourId,
+                        name: "FK_Game_Tour_TourId1",
+                        column: x => x.TourId1,
                         principalTable: "Tour",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Game_TourId",
+                name: "IX_Game_TourId1",
                 table: "Game",
-                column: "TourId");
+                column: "TourId1");
         }
 
         /// <inheritdoc />
