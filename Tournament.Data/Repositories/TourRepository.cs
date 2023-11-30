@@ -46,7 +46,7 @@ namespace Tournament.Data.Repositories
         public void Add(Tour tour)
         {
             _context.Tour.Add(tour);
-            _context.SaveChanges();
+            //_context.SaveChanges();
         }
 
         public void Update(Tour tour)
@@ -55,7 +55,7 @@ namespace Tournament.Data.Repositories
             //_context.Entry(tour).State = EntityState.Modified;
 
             // Save the changes
-            _context.SaveChanges();
+            //_context.SaveChanges();
         }
 
         public void Remove(Tour tour)
@@ -64,10 +64,13 @@ namespace Tournament.Data.Repositories
             _context.Entry(tour).State = EntityState.Deleted;
 
             // Save the changes
-            _context.SaveChanges();
+            //_context.SaveChanges();
         }
 
-
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _context.SaveChangesAsync() >= 0);
+        }
     }
 }
 

@@ -78,7 +78,8 @@ namespace Tournament.Api.Controllers
             _mapper.Map(dto, existingTour);
 
             // Save changes to db
-            _unitOfWork.TourRepository.Update(existingTour);
+            //_unitOfWork.TourRepository.Update(existingTour);
+            await _unitOfWork.TourRepository.SaveChangesAsync();
 
             return NoContent();
            
