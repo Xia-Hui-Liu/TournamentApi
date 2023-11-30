@@ -16,9 +16,11 @@ namespace Tournament.Api.Controllers
     [ApiController]
     public class ToursController : ControllerBase
     {
-       
+
         private readonly IUoW _unitOfWork;
         private readonly IMapper _mapper;
+
+        // Constructor for ToursController, injecting IUoW and IMapper
         public ToursController(IUoW unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
@@ -29,14 +31,15 @@ namespace Tournament.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TourDto>>> GetTours(bool includeGames = false)
         {
-            //var tour = await _unitOfWork.TourRepository.GetAllAsync();
-            //var tourDtos = _mapper.Map<IEnumerable<TourWithoutGameDto>>(tour);
+            // Retrieve tours from the repository based on the includeGames parameter
+            var dto = includeGames
+                ? _mapper.Map<IEnumerable<TourDto>>(await _unitOfWork.TourRepository.GetAllAsync(includeGames: true))
+                : _mapper.Map<IEnumerable<TourDto>>(await _unitOfWork.TourRepository.GetAllAsync());
 
-            //return Ok(tourDtos);
-            var dto = includeGames ? _mapper.Map<IEnumerable<TourDto>>(await _unitOfWork.TourRepository.GetAllAsync(includeGames = true)) 
-                                   : _mapper.Map<IEnumerable<TourDto>>(await _unitOfWork.TourRepository.GetAllAsync());
+            // Return the mapped TourDto as Ok result
             return Ok(dto);
         }
+
 
         // GET: api/Tours/5
         [HttpGet("{id}")]

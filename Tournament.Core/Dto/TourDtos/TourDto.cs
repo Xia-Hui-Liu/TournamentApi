@@ -10,9 +10,9 @@ namespace Tournament.Core.Dto.TourDtos
 {
     public class TourDto
     {
-        public int Id { get; set; }
-        public string? Title { get; set; }
-        public DateTime StartDate { get; set; }
+        public Guid Id { get; init; }
+        public string? Title { get; init; }
+        public DateTime StartDate { get; init; }
         public DateTime EndDate
         {
             get
@@ -20,7 +20,7 @@ namespace Tournament.Core.Dto.TourDtos
                 return StartDate.AddMonths(3);
             }
         }
-        public ICollection<GameDto> Games { get; set; } = new List<GameDto>();
+        public ICollection<GameDto>? Games { get; init; }
 
     }
 }
