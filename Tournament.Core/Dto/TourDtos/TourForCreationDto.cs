@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Tournament.Core.Dto.GameDtos;
 
 namespace Tournament.Core.Dto.TourDtos
 {
@@ -10,6 +7,6 @@ namespace Tournament.Core.Dto.TourDtos
     {
         public string? Title { get; set; }
         public DateTime StartDate { get; set; }
-        public ICollection<GameForCreationDto>? Games { get; set; }
+       
     }
 }

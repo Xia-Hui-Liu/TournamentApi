@@ -19,22 +19,23 @@ namespace Tournament.Data.Repositories
         }
 
 
-        public async Task<IEnumerable<Tour>> GetAllAsync()
+        public async Task<IEnumerable<Tour>> GetAllAsync(bool includeGames = false)
         {
-
-            return await _context.Tour.Include(t => t.Games).ToListAsync();
-
+            return includeGames? await _context.Tour
+                                .Include(t => t.Games)
+                                .ToListAsync()
+                                :await _context.Tour .ToListAsync();
         }
 
 
         public async Task<Tour> GetAsync(int id)
         {
-            var tour = await _context.Tour
-                                     .Include(t => t.Games)
-                                     .Where(t =>  t.Id == id)
-                                     .FirstOrDefaultAsync();
-
-            return tour!;
+                var tour = await _context.Tour
+                                    .Include(t => t.Games)
+                                    .Where(t => t.Id == id)
+                                    .FirstOrDefaultAsync();
+            
+                return tour!;
         }
 
 
@@ -45,8 +46,8 @@ namespace Tournament.Data.Repositories
 
         public void Add(Tour tour)
         {
-            _context.Tour.Add(tour);
-            _context.SaveChanges();
+                 _context.Tour.Add(tour);
+                 _context.SaveChanges();
         }
 
         public void Update(Tour tour)

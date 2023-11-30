@@ -27,26 +27,29 @@ namespace Tournament.Api.Controllers
 
         // GET: api/Tours
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TourDto>>> GetTour()
+        public async Task<ActionResult<IEnumerable<TourDto>>> GetTours(bool includeGames = false)
         {
-            var tour = await _unitOfWork.TourRepository.GetAllAsync();
-            var tourDtos = _mapper.Map<IEnumerable<TourDto>>(tour);
+            //var tour = await _unitOfWork.TourRepository.GetAllAsync();
+            //var tourDtos = _mapper.Map<IEnumerable<TourWithoutGameDto>>(tour);
 
-            return Ok(tourDtos);
+            //return Ok(tourDtos);
+            var dto = includeGames ? _mapper.Map<IEnumerable<TourDto>>(await _unitOfWork.TourRepository.GetAllAsync(includeGames = true)) 
+                                   : _mapper.Map<IEnumerable<TourDto>>(await _unitOfWork.TourRepository.GetAllAsync());
+            return Ok(dto);
         }
 
         // GET: api/Tours/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tour>> GetTour(int id)
+        public async Task<ActionResult<TourDto>> GetTour(int id)
         {
             var tour = await _unitOfWork.TourRepository.GetAsync(id);
-
+         
             if (tour == null)
             {
                 return NotFound();
             }
 
-            return Ok(tour);
+            return Ok(_mapper.Map<TourDto>(tour));
         }
 
 
@@ -68,16 +71,23 @@ namespace Tournament.Api.Controllers
         // POST: api/Tours
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Tour>> PostTour(Tour tour)
+        public async Task<ActionResult<TourForCreationDto>> PostTour(TourForCreationDto tour)
         {
-            _unitOfWork.TourRepository.Add(tour);
-           
-            return CreatedAtAction("GetTour", new { id = tour.Id }, tour);
+            //if (TourExists() == false)
+            //{
+            //    return NotFound();
+            //}
+
+            var tourDtos = _mapper.Map<Tour>(tour);
+            
+            _unitOfWork.TourRepository.Add(tourDtos);
+
+            return CreatedAtAction("GetTour", new { id = tourDtos.Id }, tourDtos);
         }
 
         // DELETE: api/Tours/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTour(int id)
+        public async Task<IActionResult> DeleteTour(int id, bool includeGames)
         {
             var tour = await _unitOfWork.TourRepository.GetAsync(id);
 

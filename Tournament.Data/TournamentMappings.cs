@@ -9,12 +9,9 @@ namespace Tournament.Data
     {
         public TournamentMappings()
         {
-            CreateMap<Tour, TourDto>()
-             .ForMember(
-                 dest => dest.Title,
-                 from => from.MapFrom(
-                     t => $"{t.Title} {t.StartDate.ToString("yyyy-MM-ddTHH:mm:ss")}"));
-
+            CreateMap<Tour, TourDto>();
+            CreateMap<Tour, TourWithoutGameDto>();
+        
         }
 
     }

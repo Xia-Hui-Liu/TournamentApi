@@ -10,18 +10,17 @@ namespace Tournament.Core.Dto.TourDtos
 {
     public class TourDto
     {
-
-        public Guid Id { get; init; }
-        public string? Title { get; init; }
-        public DateTime StartDate { get; init; }
-        public IEnumerable<GameDto> Games { get; init; }
-        public DateTime EndDate { get; init; }
-
-        public TourDto(string? title, DateTime startDate)
+        public int Id { get; set; }
+        public string? Title { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate
         {
-            Title = title;
-            StartDate = startDate;
-            EndDate = startDate.AddMonths(3);
+            get
+            {
+                return StartDate.AddMonths(3);
+            }
         }
+        public ICollection<GameDto> Games { get; set; } = new List<GameDto>();
+
     }
 }

@@ -4,7 +4,7 @@ namespace Tournament.Core.Repositories
 {
     public interface ITourRepository
     {
-        Task<IEnumerable<Tour>> GetAllAsync();
+        Task<IEnumerable<Tour>> GetAllAsync(bool includeGames = false);
         Task<Tour> GetAsync(int id);
 
         Task<bool> AnyAsync(int id);
