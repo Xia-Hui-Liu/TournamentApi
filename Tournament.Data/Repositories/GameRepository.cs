@@ -1,6 +1,7 @@
 ﻿
+using Bogus.DataSets;
 using Microsoft.EntityFrameworkCore;
-
+using System.Linq;
 using Tournament.Core.Entities;
 using Tournament.Core.Repositories;
 using Tournament.Data.Data;
@@ -16,12 +17,10 @@ namespace Tournament.Data.Repositories
             _context = context;
         }
 
-
         public async Task<IEnumerable<Game>> GetAllAsync()
         {
-
             return await _context.Game.ToListAsync();
-
+                                 
         }
 
 
@@ -40,10 +39,16 @@ namespace Tournament.Data.Repositories
             return _context.Game.AnyAsync(t => t.Id == id);
         }
 
-        public void Add(Game game)
+        public async void Add(Guid tourId, Game game)
         {
-            _context.Game.Add(game);
-            _context.SaveChanges();
+            var tour = await GetAsync(tourId);
+
+            if (tour != null)
+            {
+                _context.Game.Add(game);
+            }
+          
+         
         }
 
         public void Update(Game game)

@@ -2,8 +2,8 @@
 {
     public class GameDto
     {
-        public Guid Id { get; set; }
-        public string? Title { get; set; }
-        public DateTime Time { get; set; }
+        public Guid Id { get; init; }
+        public string? Title { get; init; }
+        public DateTime Time { get; init; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Tournament.Core.Dto.GameDtos;
+using Tournament.Core.Dto.TourDtos;
 using Tournament.Core.Entities;
 
 namespace Tournament.Data
@@ -8,10 +9,10 @@ namespace Tournament.Data
     {
         public GameMapping()
         {
-            CreateMap<Game, GameDto>()
-           .ForMember(
-           dest => dest.Title,
-           from => from.MapFrom(g => g.Title));
+            CreateMap<Game, GameDto>().ReverseMap();
+            CreateMap<GameForUpdateDto, Game>();
+            CreateMap<GameForCreationDto, Game>();
+
         }
        
         

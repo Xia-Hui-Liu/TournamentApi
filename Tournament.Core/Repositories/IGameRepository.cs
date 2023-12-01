@@ -14,7 +14,7 @@ namespace Tournament.Core.Repositories
         Task<Game> GetAsync(Guid id);
 
         Task<bool> AnyAsync(Guid id);
-        void Add(Game game);
+        void Add(Guid tourId, Game game);
         void Update(Game game);
         void Remove(Game game);
     }
