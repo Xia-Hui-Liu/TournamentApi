@@ -9,11 +9,11 @@ namespace Tournament.Core.Entities
         public Guid Id { get; set; }
         public string? Title { get; set; }
         public DateTime Time { get; set; }
-
         // FK
-        public int? TourId { get; set; }
+        public Guid? TourId { get; set; }
 
-
+        // Nav
+        public Tour? Tour { get; set; }
     }
 
     public class GameConfiguration : IEntityTypeConfiguration<Game>
@@ -34,7 +34,11 @@ namespace Tournament.Core.Entities
                .HasConversion(
                    time => time.ToString("yyyy-MM-ddTHH:mm:ss"),
                    timeString => DateTime.ParseExact(timeString, "yyyy-MM-ddTHH:mm:ss", null)
-               ); ;
+               );
+            builder
+               .HasOne(g => g.Tour)
+               .WithMany(t => t.Games)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

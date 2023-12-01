@@ -12,6 +12,7 @@ namespace Tournament.Data
             CreateMap<Tour, TourDto>().ReverseMap();
 
             CreateMap<TourForUpdateDto, Tour>();
+            CreateMap<TourForCreationDto, Tour>();
 
         }
 

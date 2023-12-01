@@ -78,8 +78,7 @@ namespace Tournament.Api.Controllers
             _mapper.Map(dto, existingTour);
 
             // Save changes to db
-            //_unitOfWork.TourRepository.Update(existingTour);
-            await _unitOfWork.TourRepository.SaveChangesAsync();
+            await _unitOfWork.CompleteAsync();
 
             return NoContent();
            
@@ -88,23 +87,24 @@ namespace Tournament.Api.Controllers
         // POST: api/Tours
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TourForCreationDto>> PostTour(TourForCreationDto tour)
+        public async Task<ActionResult<Tour>> PostTour(TourForCreationDto tour)
         {
-            //if (TourExists() == false)
-            //{
-            //    return NotFound();
-            //}
+            // Map the DTO to the actual entity type (Tour) using AutoMapper
+            var tourEntity = _mapper.Map<Tour>(tour);
 
-            var tourDtos = _mapper.Map<Tour>(tour);
-            
-            _unitOfWork.TourRepository.Add(tourDtos);
+            // Add the new tour entity to the repository
+            _unitOfWork.TourRepository.Add(tourEntity);
+            // Save changes to persist the new entity to the database
+            await _unitOfWork.CompleteAsync();
 
-            return CreatedAtAction("GetTour", new { id = tourDtos.Id }, tourDtos);
+            // Return the created tour DTO with a 201 CreatedAtAction response
+            var tourToReturn = _mapper.Map<TourDto>(tourEntity);
+            return CreatedAtAction("GetTour", new { id = tourEntity.Id }, tourToReturn);
         }
 
         // DELETE: api/Tours/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTour(Guid id, bool includeGames)
+        public async Task<IActionResult> DeleteTour(Guid id)
         {
             var tour = await _unitOfWork.TourRepository.GetAsync(id);
 

@@ -33,6 +33,10 @@ namespace Tournament.Core.Entities
                     time => time.ToString("O"), // Standard round-trip DateTime format
                     timeString => DateTime.ParseExact(timeString, "O", null)
                 );
+            builder
+                .HasMany(t => t.Games)
+                .WithOne(g => g.Tour)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 

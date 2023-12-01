@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Tournament.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class ChangeIdType : Migration
+    public partial class UpdateId : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,23 +31,22 @@ namespace Tournament.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Time = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TourId = table.Column<int>(type: "int", nullable: true),
-                    TourId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    TourId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Game", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Game_Tour_TourId1",
-                        column: x => x.TourId1,
+                        name: "FK_Game_Tour_TourId",
+                        column: x => x.TourId,
                         principalTable: "Tour",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Game_TourId1",
+                name: "IX_Game_TourId",
                 table: "Game",
-                column: "TourId1");
+                column: "TourId");
         }
 
         /// <inheritdoc />

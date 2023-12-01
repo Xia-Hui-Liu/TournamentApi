@@ -8,7 +8,7 @@ namespace Tournament.Core.Dto.TourDtos
 {
     public class TourForUpdateDto
     {
-      public Guid Id { get; set; }
+       public Guid Id { get; set; }
         public string? Title { get; set; }
     
     }

@@ -9,9 +9,9 @@ namespace Tournament.Core.Repositories
 
         Task<bool> AnyAsync(Guid id);
         void Add(Tour tour);
-        void Update(Tour tour);
+        //void Update(Tour tour);
         void Remove(Tour tour);
 
-        Task<bool> SaveChangesAsync();
+        //Task<bool> SaveChangesAsync();
     }
 }

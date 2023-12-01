@@ -12,8 +12,8 @@ using Tournament.Data.Data;
 namespace Tournament.Data.Migrations
 {
     [DbContext(typeof(TournamentApiContext))]
-    [Migration("20231130101802_ChangeIdType")]
-    partial class ChangeIdType
+    [Migration("20231130132455_UpdateId")]
+    partial class UpdateId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,15 +37,12 @@ namespace Tournament.Data.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TourId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("TourId1")
+                    b.Property<Guid?>("TourId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TourId1");
+                    b.HasIndex("TourId");
 
                     b.ToTable("Game");
                 });
@@ -69,9 +66,11 @@ namespace Tournament.Data.Migrations
 
             modelBuilder.Entity("Tournament.Core.Entities.Game", b =>
                 {
-                    b.HasOne("Tournament.Core.Entities.Tour", null)
+                    b.HasOne("Tournament.Core.Entities.Tour", "Tour")
                         .WithMany("Games")
-                        .HasForeignKey("TourId1");
+                        .HasForeignKey("TourId");
+
+                    b.Navigation("Tour");
                 });
 
             modelBuilder.Entity("Tournament.Core.Entities.Tour", b =>

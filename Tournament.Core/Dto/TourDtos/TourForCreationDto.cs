@@ -7,6 +7,11 @@ namespace Tournament.Core.Dto.TourDtos
     {
         public string? Title { get; set; }
         public DateTime StartDate { get; set; }
-       
+
+        public TourForCreationDto()
+        {
+            StartDate = DateTime.MinValue;
+        }
+
     }
 }
