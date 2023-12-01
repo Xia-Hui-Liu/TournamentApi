@@ -106,14 +106,17 @@ namespace Tournament.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTour(Guid id)
         {
+            // retrieve the tour we want to delete by id
             var tour = await _unitOfWork.TourRepository.GetAsync(id);
 
             if (tour == null)
             {
                 return NotFound();
             }
-
+            // if exist remove it from the database
             _unitOfWork.TourRepository.Remove(tour);
+            // save changes to the databas
+            await _unitOfWork.CompleteAsync();
 
             return NoContent();
         }
