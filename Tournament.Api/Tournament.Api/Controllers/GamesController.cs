@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Tournament.Core.Dto.GameDtos;
 using Tournament.Core.Entities;
@@ -134,13 +135,40 @@ namespace Tournament.Api.Controllers
         }
 
 
-        // GET: api/Games/Exists/5
-        [HttpGet("Exists/{id}")]
-        public async Task<ActionResult<bool>> GameExists(Guid id)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchGame(Guid id,  JsonPatchDocument<GameDto> patchDocument)
         {
-            var exists = await _unitOfWork.GameRepository.AnyAsync(id);
-            return Ok(exists);
+            if (patchDocument == null)
+            {
+                return BadRequest();
+            }
+
+            var game = await _unitOfWork.GameRepository.GetAsync(id);
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+
+            var gameDto = _mapper.Map<GameDto>(game);
+
+            // Apply the patch document to the game DTO
+            patchDocument.ApplyTo(gameDto, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Map the updated game DTO back to the entity
+            _mapper.Map(gameDto, game);
+
+            // Save changes to the database
+            await _unitOfWork.CompleteAsync();
+
+            return NoContent();
         }
+
 
     }
 }
