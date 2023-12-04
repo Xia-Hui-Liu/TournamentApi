@@ -19,6 +19,7 @@ namespace Tournament.Api.Controllers
 
         private readonly IUoW _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly I
 
         // Constructor for ToursController, injecting IUoW and IMapper
         public ToursController(IUoW unitOfWork, IMapper mapper)
