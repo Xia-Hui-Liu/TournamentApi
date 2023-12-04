@@ -7,7 +7,7 @@ using Tournament.Core.Services;
 
 namespace Tournament.Data.Services
 {
-    public class ServiceManager
+    public class ServiceManager : IServiceManager
     {
         // Declare a private readonly Lazy<ITourService> field named _tourService.
         // Lazy<T> is a class in .NET that provides lazy initialization of objects,

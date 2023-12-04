@@ -3,14 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Tournament.Core.Dto.TourDtos;
 using Tournament.Core.Entities;
 using Tournament.Core.Repositories;
+using Tournament.Core.Services;
 
 namespace Tournament.Data.Services
 {
   
     public class TourService : ITourService
-    {
+    { 
         private readonly IUoW _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly IMapper _mapper;   
 
         public TourService(IUoW unitOfWork, IMapper mapper)
         {
@@ -23,20 +24,24 @@ namespace Tournament.Data.Services
         public async Task<IEnumerable<TourDto>> GetAllAsync(bool includeGames = false)
         {
             var tours = await _unitOfWork.TourRepository.GetAllAsync(includeGames);
-
             var dtos = _mapper.Map<IEnumerable<TourDto>>(tours);
             return dtos;
         }
 
 
-        //public async Task<Tour> GetAsync(Guid id)
-        //{
-        //    var tour = await _context.Tour
-        //                       .Where(t => t.Id == id)
-        //                       .FirstOrDefaultAsync();
 
-        //    return tour!;
-        //}
+
+        public async Task<TourDto> GetAsync(Guid id)
+        {
+            var tour = await _unitOfWork.TourRepository.GetAsync(id);
+
+            var dtos = _mapper.Map<TourDto>(tour);
+
+                
+            return dtos;
+        }
+
+     
 
 
         //public Task<bool> AnyAsync(Guid id)
@@ -46,7 +51,7 @@ namespace Tournament.Data.Services
 
         //public void Add(Tour tour)
         //{
-        //    _context.Tour.Add(tour);
+        //   var tourToAdd = _unitOfWork.TourRepository.Add(tour)
         //    //_context.SaveChanges();
         //}
 

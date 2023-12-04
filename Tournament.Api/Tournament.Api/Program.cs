@@ -2,9 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Tournament.Api.Extensions;
 using Tournament.Core.Repositories;
+using Tournament.Core.Services;
 using Tournament.Data;
 using Tournament.Data.Data;
 using Tournament.Data.Repositories;
+using Tournament.Data.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +30,8 @@ builder.Services.AddAutoMapper(typeof(GameMapping));
 builder.Services.AddScoped<IUoW, UoW>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<ITourRepository, TourRepository>();
+builder.Services.AddScoped<IServiceManager, ServiceManager>();
+
 
 var app = builder.Build();
 

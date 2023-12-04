@@ -9,6 +9,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using NuGet.Protocol;
 using Tournament.Core.Dto.TourDtos;
+using Tournament.Core.Services;
 
 namespace Tournament.Api.Controllers
 {
@@ -19,26 +20,28 @@ namespace Tournament.Api.Controllers
 
         private readonly IUoW _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly I
+        private readonly IServiceManager _serviceManager;
 
         // Constructor for ToursController, injecting IUoW and IMapper
-        public ToursController(IUoW unitOfWork, IMapper mapper)
+        public ToursController(IUoW unitOfWork, IMapper mapper, IServiceManager serviceManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _serviceManager = serviceManager;
         }
 
         // GET: api/Tours
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TourDto>>> GetTours(bool includeGames = false)
         {
-            // Retrieve tours from the repository based on the includeGames parameter
-            var dto = includeGames
-                ? _mapper.Map<IEnumerable<TourDto>>(await _unitOfWork.TourRepository.GetAllAsync(includeGames: true))
-                : _mapper.Map<IEnumerable<TourDto>>(await _unitOfWork.TourRepository.GetAllAsync());
+            return Ok(await _serviceManager.TourService.GetAllAsync(includeGames));
+            //// Retrieve tours from the repository based on the includeGames parameter
+            //var dto = includeGames
+            //    ? _mapper.Map<IEnumerable<TourDto>>(await _unitOfWork.TourRepository.GetAllAsync(includeGames: true))
+            //    : _mapper.Map<IEnumerable<TourDto>>(await _unitOfWork.TourRepository.GetAllAsync());
 
-            // Return the mapped TourDto as Ok result
-            return Ok(dto);
+            //// Return the mapped TourDto as Ok result
+            //return Ok(dto);
         }
 
 

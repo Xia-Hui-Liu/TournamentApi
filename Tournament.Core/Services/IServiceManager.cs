@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tournament.Core.Services
 {
-    internal class IServiceManager
+    public interface IServiceManager
     {
+        ITourService TourService { get; }
     }
 }
