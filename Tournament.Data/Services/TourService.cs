@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Bogus.DataSets;
 using Microsoft.EntityFrameworkCore;
 using Tournament.Core.Dto.TourDtos;
 using Tournament.Core.Entities;
@@ -29,8 +30,6 @@ namespace Tournament.Data.Services
         }
 
 
-
-
         public async Task<TourDto> GetAsync(Guid id)
         {
             var tour = await _unitOfWork.TourRepository.GetAsync(id);
@@ -42,27 +41,33 @@ namespace Tournament.Data.Services
         }
 
      
-
+        public async Task<TourDto> UpdateAsync(Guid id, TourForUpdateDto dto)
+        {
+            var tour = _mapper.Map<Tour>(dto);
+            _unitOfWork.TourRepository.Update(tour);
+            await _unitOfWork.CompleteAsync();
+            return _mapper.Map<TourDto>(tour);
+        }
 
         //public Task<bool> AnyAsync(Guid id)
         //{
         //    return _context.Tour.AnyAsync(t => t.Id == id);
         //}
 
-        //public void Add(Tour tour)
-        //{
-        //   var tourToAdd = _unitOfWork.TourRepository.Add(tour)
-        //    //_context.SaveChanges();
-        //}
+        public async Task<TourDto> PostAsync(TourForCreationDto dto)
+        {
+            var tour = _mapper.Map<Tour>(dto);
+            _unitOfWork.TourRepository.Add(tour);
+            await _unitOfWork.CompleteAsync();
+            return _mapper.Map<TourDto>(tour);
+        }
 
+        public async Task<TourDto> DeleteAsync(Guid id)
+        {
+            var existTour = await _unitOfWork.TourRepository.GetAsync(id);
 
-        //public void Remove(Tour tour)
-        //{
-        //    // Mark the entire entity as deleted
-        //    _context.Entry(tour).State = EntityState.Deleted;
+            return _mapper.Map<TourDto>(existTour);
 
-        //    // Save the changes
-        //    _context.SaveChanges();
-        //}
+        }
     }
 }

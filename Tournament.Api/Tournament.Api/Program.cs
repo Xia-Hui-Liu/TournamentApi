@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tournament.Api.Extensions;
 using Tournament.Core.Repositories;
@@ -27,10 +28,28 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(TournamentMappings));
 builder.Services.AddAutoMapper(typeof(GameMapping));
 
+
+// Register the Unit of Work service with a scoped lifetime.
 builder.Services.AddScoped<IUoW, UoW>();
+
+// Register the GameRepository service with a scoped lifetime.
 builder.Services.AddScoped<IGameRepository, GameRepository>();
+
+// Register the TourRepository service with a scoped lifetime.
 builder.Services.AddScoped<ITourRepository, TourRepository>();
+
+// Register the TourService service with a scoped lifetime.
+builder.Services.AddScoped<ITourService, TourService>();
+
+// Register a Lazy<ITourRepository> using a factory function to resolve dependencies.
+builder.Services.AddScoped(provider => new Lazy<ITourRepository>(() => provider.GetRequiredService<ITourRepository>()));
+
+// Register a Lazy<ITourService> using a factory function to resolve dependencies.
+builder.Services.AddScoped(provider => new Lazy<ITourService>(() => provider.GetRequiredService<ITourService>()));
+
+// Register the ServiceManager service with a scoped lifetime.
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
+
 
 
 var app = builder.Build();

@@ -46,9 +46,12 @@ namespace Tournament.Data.Repositories
         public void Add(Tour tour)
         {
             _context.Tour.Add(tour);
-            //_context.SaveChanges();
         }
 
+        public void Update (Tour tour)
+        {
+            _context.Tour.Update(tour);
+        }
 
         public void Remove(Tour tour)
         {
