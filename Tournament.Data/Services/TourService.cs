@@ -49,10 +49,6 @@ namespace Tournament.Data.Services
             return _mapper.Map<TourDto>(tour);
         }
 
-        //public Task<bool> AnyAsync(Guid id)
-        //{
-        //    return _context.Tour.AnyAsync(t => t.Id == id);
-        //}
 
         public async Task<TourDto> PostAsync(TourForCreationDto dto)
         {

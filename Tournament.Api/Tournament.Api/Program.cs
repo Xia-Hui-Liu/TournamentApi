@@ -41,15 +41,23 @@ builder.Services.AddScoped<ITourRepository, TourRepository>();
 // Register the TourService service with a scoped lifetime.
 builder.Services.AddScoped<ITourService, TourService>();
 
+// Register the GameService service with a scoped lifetime.
+builder.Services.AddScoped<IGameService, GameService>();
+
 // Register a Lazy<ITourRepository> using a factory function to resolve dependencies.
 builder.Services.AddScoped(provider => new Lazy<ITourRepository>(() => provider.GetRequiredService<ITourRepository>()));
 
 // Register a Lazy<ITourService> using a factory function to resolve dependencies.
 builder.Services.AddScoped(provider => new Lazy<ITourService>(() => provider.GetRequiredService<ITourService>()));
 
+// Register a Lazy<IGameRepository> using a factory function to resolve dependencies.
+builder.Services.AddScoped(provider => new Lazy<IGameRepository>(() => provider.GetRequiredService<IGameRepository>()));
+
+// Register a Lazy<IGameService> using a factory function to resolve dependencies.
+builder.Services.AddScoped(provider => new Lazy<IGameService>(() => provider.GetRequiredService<IGameService>()));
+
 // Register the ServiceManager service with a scoped lifetime.
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
-
 
 
 var app = builder.Build();

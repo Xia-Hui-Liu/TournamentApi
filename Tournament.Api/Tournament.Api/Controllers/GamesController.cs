@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tournament.Core.Dto.GameDtos;
 using Tournament.Core.Entities;
 using Tournament.Core.Repositories;
+using Tournament.Core.Services;
 
 namespace Tournament.Api.Controllers
 {
@@ -14,22 +15,19 @@ namespace Tournament.Api.Controllers
     {
         private readonly IUoW _unitOfWork;
         private readonly IMapper _mapper;
-        public GamesController(IUoW unitOfWork, IMapper mapper)
+        private readonly IServiceManager _serviceManager;
+        public GamesController(IUoW unitOfWork, IMapper mapper, IServiceManager serviceManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _serviceManager = serviceManager;
         }
 
         // GET: api/Games
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GameDto>>> GetGamesAsync()
         {
-            var games = await _unitOfWork.GameRepository.GetAllAsync();
-
-            // Use AutoMapper to map the list of games to a list of game DTOs
-            var gameDtoList = _mapper.Map<IEnumerable<GameDto>>(games);
-
-            return Ok(gameDtoList); // Return a 200 OK response with the retrieved games
+            return Ok(await _serviceManager.GameService.GetAllAsync());
         }
 
 
