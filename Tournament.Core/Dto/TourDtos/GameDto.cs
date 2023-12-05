@@ -14,7 +14,7 @@ namespace Tournament.Core.Dto.TourDtos
         public string? Title { get; init; }
         public DateTime StartDate { get; init; }
         public DateTime EndDate => StartDate.AddMonths(3);
-        public ICollection<GameDtos.GameDto>? Games { get; init; }
+        public ICollection<GameDto>? Games { get; init; }
 
     }
 }

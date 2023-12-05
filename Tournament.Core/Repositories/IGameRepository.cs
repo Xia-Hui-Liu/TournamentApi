@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Tournament.Core.Dto.GameDtos;
 using Tournament.Core.Entities;
 
 namespace Tournament.Core.Repositories
@@ -10,11 +7,11 @@ namespace Tournament.Core.Repositories
     public interface IGameRepository
     {
 
-        Task<IEnumerable<Game>> GetAllAsync();
+        Task<IEnumerable<Game>> GetAllAsync(Guid tourId);
         Task<Game> GetAsync(Guid id);
 
         Task<bool> AnyAsync(Guid id);
-        void Add(Guid tourId, Game game);
+        void Add(Game game);
         void Update(Game game);
         void Remove(Game game);
     }

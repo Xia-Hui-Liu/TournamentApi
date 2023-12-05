@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Tournament.Core.Dto.GameDtos;
+using Tournament.Core.Dto.TourDtos;
 using Tournament.Core.Entities;
 using Tournament.Core.Repositories;
 using Tournament.Core.Services;
@@ -18,10 +19,9 @@ namespace Tournament.Data.Services
 
         }
 
-
-        public async Task<IEnumerable<GameDto>> GetAllAsync()
+        public async Task<IEnumerable<GameDto>> GetAllAsync(Guid tourId)
         {
-            var games = await _unitOfWork.GameRepository.GetAllAsync();
+            var games = await _unitOfWork.GameRepository.GetAllAsync(tourId);
             var dtos = _mapper.Map<IEnumerable<GameDto>>(games);
             return dtos;
         }
@@ -45,11 +45,10 @@ namespace Tournament.Data.Services
             return _mapper.Map<GameDto>(game);
         }
 
-
-        public async Task<GameDto> PostAsync(Guid id, GameForCreationDto dto)
+        public async Task<GameDto?> PostAsync(GameForCreationDto dto)
         {
             var game = _mapper.Map<Game>(dto);
-            _unitOfWork.GameRepository.Add(id, game);
+            _unitOfWork.GameRepository.Add(game);
             await _unitOfWork.CompleteAsync();
             return _mapper.Map<GameDto>(game);
         }

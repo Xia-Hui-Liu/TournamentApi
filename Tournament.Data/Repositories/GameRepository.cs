@@ -2,6 +2,7 @@
 using Bogus.DataSets;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Tournament.Core.Dto.GameDtos;
 using Tournament.Core.Entities;
 using Tournament.Core.Repositories;
 using Tournament.Data.Data;
@@ -17,11 +18,24 @@ namespace Tournament.Data.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Game>> GetAllAsync()
+        public async Task<IEnumerable<Game>> GetAllAsync(Guid tourId)
         {
-            return await _context.Game.ToListAsync();
-                                 
+            var tour = await _context.Tour
+                .Include(t => t.Games)
+                .ThenInclude(g = g => g.Games)
+                .FirstOrDefaultAsync(t => t.Id == tourId);
+
+            //if (tour is null)
+            //{
+            //    // Return an empty collection if the specified tour is not found
+            //    return Enumerable.Empty<Game>();
+            //}
+
+            return tour.Games!;
         }
+
+
+
 
 
         public async Task<Game> GetAsync(Guid id)
@@ -39,16 +53,11 @@ namespace Tournament.Data.Repositories
             return _context.Game.AnyAsync(t => t.Id == id);
         }
 
-        public async void Add(Guid tourId, Game game)
+        public void Add(Game game)
         {
-            var tour = await GetAsync(tourId);
-
-            if (tour != null)
-            {
-                _context.Game.Add(game);
-            }
           
-         
+          _context.Game.Add(game);
+            
         }
 
         public void Update(Game game)

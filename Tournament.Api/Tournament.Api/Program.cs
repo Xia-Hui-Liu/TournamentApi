@@ -8,6 +8,7 @@ using Tournament.Data;
 using Tournament.Data.Data;
 using Tournament.Data.Repositories;
 using Tournament.Data.Services;
+using Microsoft.AspNetCore.StaticFiles;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options =>
 {
     options.ReturnHttpNotAcceptable = true;
-}).AddNewtonsoftJson();
+}).AddNewtonsoftJson()
+.AddXmlDataContractSerializerFormatters();
 
 builder.Services.AddDbContext<TournamentApiContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TournamentApiContext") ?? throw new InvalidOperationException("Connection string 'TournamentApiContext' not found.")));
@@ -74,9 +76,16 @@ var app = builder.Build();
 
     app.UseHttpsRedirection();
 
+    app.UseRouting();
     app.UseAuthorization();
 
-    app.MapControllers();
+
+    app.UseEndpoints(endpoints =>
+    {
+        _ = endpoints.MapControllers();
+    });
+
+//app.MapControllers();
 
     app.Run();
 
