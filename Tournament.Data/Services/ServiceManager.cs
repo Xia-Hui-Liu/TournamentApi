@@ -10,15 +10,19 @@ namespace Tournament.Data.Services
         // meaning the object is created only when it is first accessed.
         private readonly Lazy<ITourService> _tourService;
 
+        private readonly Lazy<IGameService> _gameService;
         // Declare a public property named TourService, which exposes the Value property of _tourService.
         // The Value property of Lazy<T> ensures that the underlying object is created if it hasn't been created yet.
         public ITourService TourService => _tourService.Value;
 
+        public IGameService GameService => _gameService.Value;
+
         // Constructor for the ServiceManager class, which takes a Lazy<ITourService> as a parameter.
-        public ServiceManager(Lazy<ITourService> tourService)
+        public ServiceManager(Lazy<ITourService> tourService, Lazy<IGameService> gameService)
         {
             // Assign the provided Lazy<ITourService> to the private _tourService field.
             _tourService = tourService;
+            _gameService = gameService;
         }
     }
 

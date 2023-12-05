@@ -1,17 +1,9 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Tournament.Data.Data;
 using Tournament.Core.Entities;
-using Tournament.Core.Repositories;
-using Bogus.DataSets;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using NuGet.Protocol;
 using Tournament.Core.Dto.TourDtos;
 using Tournament.Core.Services;
-using Tournament.Data.Services;
-using Humanizer;
+
 
 namespace Tournament.Api.Controllers
 {

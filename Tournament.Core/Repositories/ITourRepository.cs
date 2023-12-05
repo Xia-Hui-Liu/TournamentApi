@@ -11,7 +11,5 @@ namespace Tournament.Core.Repositories
         void Add(Tour tour);
         void Update(Tour tour);
         void Remove(Tour tour);
-
-        //Task<bool> SaveChangesAsync();
     }
 }
